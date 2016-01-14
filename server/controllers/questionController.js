@@ -12,6 +12,8 @@ module.exports = {
     .then(function(questions) {
       var formattedQs = questions.map(function(question) {
         return {
+          courseId: question.CourseId,
+          userId: question.UserId,
           id: question.id,
           title: question.title,
           text: question.text,
@@ -158,6 +160,8 @@ module.exports = {
     })
     .then(function(question) {
       var formattedQ = [{
+        courseId: question.CourseId,
+        userId: question.UserId,
         id: question.id,
         title: question.title,
         text: question.text,

@@ -68,6 +68,7 @@
     <script>
       $('#logout').on('click', function (e) {
         localStorage.removeItem('com.boorish');
+        // $.removeCookie('connect.sid', { path: '/' });
         location.reload();
       });
     </script>

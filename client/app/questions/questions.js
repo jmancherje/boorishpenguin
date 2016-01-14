@@ -24,12 +24,43 @@ angular.module('boorish.questions', [])
     });
   };
 
+  $scope.filterQuestionsByClasses = function () {
+    $scope.listFilter='myClasses';
+    console.log('filtering..', $scope.questions);
+    var questions = $scope.questions;
+    $scope.userCourseQuestions = questions.reduce(function (array, question) {
+      if ($scope.userCourseIds.indexOf(question.courseId) > -1) {
+        array.push(question);
+      }
+      return array;
+    }, []);
+    // $scope.userCourseQuestions = questions.map(function (question) {
+    //   if ($scope.userCourseIds.indexOf(question.courseId) > -1) {
+    //     return question;
+    //   }
+    // });
+    console.log('question for users courses: ', $scope.userCourseQuestions);
+  };
+
   $scope.init = function() {
 
     $scope.getAllCourses = function () {
       Courses.getCourses().then(function (data) {
         console.log('get all courses: ', data);
         $scope.allCourses = data.results;
+        // GET COURSES SPECIFIC FOR USER
+        Courses.getUsersCourses($scope.userId).then(function(courseObj) {
+          console.log(courseObj);
+          // $scope.userCourses = courseObj.courses;
+          $scope.userCourseIds = courseObj.courseIds;
+          if ($scope.allCourses) {
+            $scope.userCourses = $scope.allCourses.map(function (course) {
+              if ($scope.userCourseIds.indexOf(course.id) > -1) {
+                return course;
+              }
+            });
+          }
+        });
       });
     };
     // function for a user to join a course
@@ -56,35 +87,38 @@ angular.module('boorish.questions', [])
       });
     };
 
-    $scope.getTags();
-    $scope.getAllCourses();
 
+    // GET ALL DATA
     Questions.getAllQuestions().then(function(data) {
       console.log('get all questions: ', data);
       $scope.questions = data.data.results;
+      console.log('all questions: ', $scope.questions);
+      
+      $scope.getAllCourses();
       // get info for user after getting all questions
       // $scope.questions is default list of questions on main page
-      Courses.getAllCoursesForUser($scope.userId).then(function (data) {
-        console.log('user course data: ', data);
-        $scope.userCourseIds = data.userCourseIds;
-        $scope.userInCourses = data.userIn;
-        $scope.userNotInCourses = data.userNotIn;
+      // Courses.getAllCoursesForUser($scope.userId).then(function (data) {
+      //   console.log('user course data: ', data);
+      //   $scope.userCourseIds = data.userCourseIds;
+      //   $scope.userInCourses = data.userIn;
+      //   $scope.userNotInCourses = data.userNotIn;
 
-        // get questions for classes user is in only
-        // stored in %scope.userCourseQuestions
-        // used for secondary view of questions ('My Classes')
-        if ($scope.questions && $scope.userCourseIds) {
-          $scope.userCourseQuestions = $scope.questions.reduce(function (array, question) {
-            if ($scope.userCourseIds.indexOf(question.id)) {
-              array.push(question);
-            }
-            return array;
-          }, []);
-          console.log('users course questions: ', $scope.userCourseQuestions);
-        }
-
-      })
-    })
+      //   // get questions for classes user is in only
+      //   // stored in %scope.userCourseQuestions
+      //   // used for secondary view of questions ('My Classes')
+      //   if ($scope.questions && $scope.userCourseIds) {
+      //     $scope.userCourseQuestions = $scope.questions.reduce(function (array, question) {
+      //       if ($scope.userCourseIds.indexOf(question.id)) {
+      //         array.push(question);
+      //       }
+      //       return array;
+      //     }, []);
+      //     console.log('users course questions: ', $scope.userCourseQuestions);
+      //   }
+      // })
+    });
+    // get all tags and courses
+    $scope.getTags();
 
   };
 

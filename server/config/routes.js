@@ -25,7 +25,8 @@ module.exports = function(app, express, ensureAuth) {
 
   app.get('/townhall/courses', ensureAuth, courseControllers.allCourses);
   app.post('/townhall/courses', ensureAuth, courseControllers.createCourse);
-  app.get('/townhall/courses/:id', ensureAuth, courseControllers.allCoursesForUser);
+  // app.get('/townhall/courses/:id', ensureAuth, courseControllers.allCoursesForUser);
+  app.get('/townhall/courses/:id', ensureAuth, courseControllers.allUsersCourses);
   
   app.post('/townhall/CourseUsers', ensureAuth, courseControllers.addUser);
 

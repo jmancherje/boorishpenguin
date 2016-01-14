@@ -1,29 +1,39 @@
-<div class="col-md-4">
-  <h2>Join a new class</h2>
+<div class="col-md-3">
+  <h3 class="question-filter" id="join-class-header">Join a new class</h3>
+  <div class="list-of-courses">
+    <ul>
+      <li class="class-sidebar-li lead" ng-repeat="course in allCourses">
+        <div class="row">
+          <div class="col-xs-3">
+            
+            <button class="btn btn-default" ng-show="userCourseIds.indexOf(course.id) === -1" ng-click="addToCourse(allCourses.indexOf(course))"><span class="glyphicon glyphicon-plus-sign"></span></button>
+
+          </div>
+
+          <div class="col-xs-9">
+            <p>{{course.name}}</p>
+          </div>
+        </div>
+        
+      </li>
+    </ul>
+  </div>
   <!-- <input type="text" ng-model="newClass">
   <button ng-click="createClass()">create class</button>
 <br> -->
-  <ul>
-    <li class="class-sidebar-li" ng-repeat="course in allCourses">
-      <p>{{course.name}}</p>
-      <button ng-show="userCourseIds.indexOf(course.id) === -1" ng-click="addToCourse(allCourses.indexOf(course))">Join Class</button>
-    </li>
-  </ul>
   <!-- <input type="text" ng-model="newTag">
   <button ng-click="createTag()">create tag</button> -->
 </div>
 
-<div ng-module='boorish.questions' class="col-md-8">
+<div ng-module='boorish.questions' class="col-md-9 border-left">
   <ul class="question-filter-ul">
     <li>
       <h3 class="question-filter" ng-click="listFilter='allQuestions'">All</h3>
     </li>
     <li>
-      <h3 class="question-filter" ng-click="listFilter='myClasses'">My Classes</h3>
+      <h3 class="question-filter" ng-click="filterQuestionsByClasses()">My Classes</h3>
     </li>
   </ul>
-
-    <hr>
 
   <!-- LIST FOR ALL QUESTIONS (MINIMIZE FOR CONVENIENCE) -->
       <div ng-show="listFilter==='allQuestions'" ng-repeat='question in questions | filter:searchText | orderBy:"-updatedAt"' class="question-list-item">
@@ -60,7 +70,7 @@
       </div>
 
   <!-- LIST OF ALL QUESTIONS FOR USERS CLASSES -->
-      <div ng-show="listFilter==='myClasses'" ng-repeat='question in userCourseQuestions | filter:searchText | orderBy:"-updatedAt"' class="question-list-item">
+      <div ng-show="listFilter==='myClasses'" ng-repeat='question in userCourseQuestions track by $index | filter:searchText | orderBy:"-updatedAt"' class="question-list-item">
         <div class="col-sm-2 col-xs-3">
           <div>
             <img ng-src="{{ question.imgUrl }}0" width="50" height="50">

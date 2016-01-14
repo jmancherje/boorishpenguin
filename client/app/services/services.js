@@ -201,7 +201,18 @@ angular.module('boorish.services', [])
       .then(function(res) {
         return res.data;
       });
-    }, 
+    },
+
+    getUsersCourses: function (userId) {
+      var url = '/townhall/courses/' + userId;
+      return $http({
+        method: 'GET',
+        url: url
+      })
+      .then(function (res) {
+        return res.data;
+      })
+    },
 
     getAllCoursesForUser: function(userId) {
       var url = '/townhall/courses/' + userId;

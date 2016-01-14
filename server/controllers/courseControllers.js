@@ -31,6 +31,28 @@ module.exports = {
     });
   },
 
+  allUsersCourses: function(req, res) {
+    var uid = req.params.id;
+    db.CourseUser.findAll({
+      where: {
+        UserId: uid
+      }
+    }).then(function(courses) {
+      // get array of course Ids:
+      console.log('This console.log has to be here..', courses);
+      var courseIds = [];
+      if (courses.length > 0){
+        courseIds = courses.map(function(object) {
+          return object.dataValues.CourseId;
+        });
+      }
+      var courseObj = {
+        courseIds: courseIds
+      }
+      res.json(courseObj);
+    })
+  },
+
   allCoursesForUser: function(req, res) {
     var uid = req.params.id;
     db.CourseUser.findAll({
